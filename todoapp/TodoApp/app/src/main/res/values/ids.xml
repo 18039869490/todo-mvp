@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 主界面  Main interface-->
+    <item type="id" name="drawer_layout"></item>
+    <item type="id" name="nav_view"></item>
+    <item type="id" name="refresh_layout"></item>
+    <item type="id" name="tasksContainer"></item>
+    <item type="id" name="fab_edit_task_done"></item>
+    <item type="id" name="coordinator_layout"></item>
+    <item type= "id" name="toolbar"></item>
+    <item type="id" name="content_frame"></item>
+</resources>

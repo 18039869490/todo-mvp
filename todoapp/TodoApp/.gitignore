@@ -36,4 +36,5 @@ gen/
 # Android Studio captures folder
 captures/
 
-Edyd.iml
+TodoApp.iml
+app/app.iml
