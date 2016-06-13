@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">记事本</string>
     <string name="add_task">New TO-DO</string>
-    <string name="edit_task">Edit TO-DO</string>
+    <string name="edit_task">编辑</string>
     <string name="task_marked_complete">Task marked complete</string>
     <string name="task_marked_active">Task marked active</string>
     <string name="loading_tasks_error">Error while loading tasks</string>

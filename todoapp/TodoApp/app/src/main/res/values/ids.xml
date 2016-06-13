@@ -10,4 +10,8 @@
     <item type="id" name="coordinator_layout"></item>
     <item type= "id" name="toolbar"></item>
     <item type="id" name="content_frame"></item>
+
+    <item type="id" name="add_task_title"></item>
+    <item type="id" name="add_task_description"></item>
+
 </resources>
