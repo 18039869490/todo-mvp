@@ -53,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="You have no TO-DOs!"
+                    android:text="@string/all_no_tasks"
                     android:layout_marginBottom="8dp"/>
                 <TextView
                     android:id="@+id/no_tasks_add"

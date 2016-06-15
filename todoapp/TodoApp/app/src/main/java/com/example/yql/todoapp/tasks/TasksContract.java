@@ -28,7 +28,7 @@ public interface TasksContract {
         void showAllFilterLabel();
         void showNoActiveTasks();
         void showNoCompletedTasks();
-        void showSuccessFullySaveMessage();
+        void showSuccessfullySavedMessage();
         boolean isActive();
         void showFilteringPopUpMenu();
     }

@@ -18,13 +18,17 @@ import com.example.yql.todoapp.R;
  */
 public class AddEditTaskFragment extends Fragment implements AddEditTaskContract.View  {
 
-    public static final String ARGUMENT_EDIT_TASK_ID = "EDIT_TASK_ID";
+    //-----------Base view widgets--------------
 
-    private AddEditTaskContract.Presenter mPresenter;
-
+    //to do title
     private TextView mTitle;
 
+    //to do description
     private TextView mDescription;
+
+    //------------Base variable---------------
+    public static final String ARGUMENT_EDIT_TASK_ID = "EDIT_TASK_ID";
+    private AddEditTaskContract.Presenter mPresenter;
 
     public static AddEditTaskFragment newInstance() {
         return new AddEditTaskFragment();

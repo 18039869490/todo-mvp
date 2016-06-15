@@ -83,7 +83,7 @@ public class TasksActivity extends BaseAppCompatActivity {
 
     @Override
     protected void resetTranslucentStatus() {
-        setTranslucentStatus(1, false, 0);
+        setTranslucentStatus(2, true, R.color.colorPrimary);
     }
 
     @Override

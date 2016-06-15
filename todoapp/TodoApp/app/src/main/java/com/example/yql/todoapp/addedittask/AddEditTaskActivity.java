@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import com.example.yql.todoapp.BaseAppCompatActivity;
 import com.example.yql.todoapp.Injection;
 import com.example.yql.todoapp.R;
+import com.example.yql.todoapp.util.ActivityUtils;
 import com.example.yql.todoapp.util.EspressoIdlingResource;
 
 /**
@@ -46,14 +47,18 @@ public class AddEditTaskActivity extends BaseAppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID, taskId);
                 addEditTaskFragment.setArguments(bundle);
+            }else {
+                actionBar.setTitle(R.string.add_task);
             }
-        } else {
-            actionBar.setTitle(R.string.add_task);
+
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+                    addEditTaskFragment, R.id.content_frame);
         }
 
         //Create the presenter
-//        new AddEditTasksPresenter(taskId, Injection.provideTasksRepository(getApplicationContext()),
-//                addEditTaskFragment);
+        new AddEditTasksPresenter(taskId,
+                Injection.provideTasksRepository(getApplicationContext()),
+                addEditTaskFragment);
 
     }
 
@@ -70,7 +75,7 @@ public class AddEditTaskActivity extends BaseAppCompatActivity {
 
     @Override
     protected void resetTranslucentStatus() {
-        setTranslucentStatus(1, false, 0);
+        setTranslucentStatus(2, true, R.color.colorPrimary);
     }
 
     @VisibleForTesting

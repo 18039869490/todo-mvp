@@ -1,8 +1,10 @@
 package com.example.yql.todoapp.tasks;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 
 
+import com.example.yql.todoapp.addedittask.AddEditTaskActivity;
 import com.example.yql.todoapp.data.Task;
 import com.example.yql.todoapp.data.source.TasksDataSource;
 import com.example.yql.todoapp.data.source.TasksRepository;
@@ -48,7 +50,10 @@ public class TasksPresenter implements TasksContract.Presenter {
 
     @Override
     public void result(int requestCode, int resultCode) {
-
+        //If a task was successfully added, show snackbar
+        if(AddEditTaskActivity.REQUEST_ADD_TASK == requestCode && Activity.RESULT_OK == resultCode) {
+            mTasksView.showSuccessfullySavedMessage();
+        }
     }
 
     @Override

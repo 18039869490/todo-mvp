@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -65,6 +66,11 @@ public class TasksFragment extends Fragment implements TasksContract.View{
     @Override
     public void setPresenter(TasksContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mPresenter.result(requestCode, resultCode);
     }
 
     @Nullable
@@ -198,6 +204,10 @@ public class TasksFragment extends Fragment implements TasksContract.View{
 
     }
 
+    private void showMessage(String message) {
+        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
+    }
+
     @Override
     public void showNoTasks() {
         showNoTasksViews(getResources().getString(R.string.no_tasks_all),
@@ -240,8 +250,8 @@ public class TasksFragment extends Fragment implements TasksContract.View{
     }
 
     @Override
-    public void showSuccessFullySaveMessage() {
-
+    public void showSuccessfullySavedMessage() {
+        showMessage(getString(R.string.successfully_saved_task_message));
     }
 
     @Override
