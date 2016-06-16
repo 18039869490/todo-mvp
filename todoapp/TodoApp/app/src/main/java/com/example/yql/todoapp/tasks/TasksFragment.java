@@ -123,7 +123,9 @@ public class TasksFragment extends Fragment implements TasksContract.View{
                 mPresenter.loadTasks(false);
             }
         });
+
         setHasOptionsMenu(true);
+
         return root;
     }
 
