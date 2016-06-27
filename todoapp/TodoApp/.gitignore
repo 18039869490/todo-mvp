@@ -9,7 +9,7 @@
 #idea default setting
 /.idea
 
-/build
+build/
 
 # Built application files
 *.apk
