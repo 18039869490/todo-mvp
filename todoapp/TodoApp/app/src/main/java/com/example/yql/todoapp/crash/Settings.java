@@ -1,9 +1,30 @@
 package com.example.yql.todoapp.crash;
 
+import com.example.yql.todoapp.deviceinfo.DeviceInfoManager;
+
 /**
  * Created by yanqilong on 6/26/16.
  */
 public class Settings {
+
+    public DeviceInfoManager deviceInfoManager;
+
+    private Settings() {}
+
+    private static Settings instance = new Settings();
+
+    public static Settings getInstance() {
+        return instance;
+    }
+
+    public Settings init() {
+        if(deviceInfoManager == null) {
+            deviceInfoManager = DeviceInfoManager.getInstance();
+        }
+
+        return this;
+    }
+
     /**
      * true if to print build info
      */

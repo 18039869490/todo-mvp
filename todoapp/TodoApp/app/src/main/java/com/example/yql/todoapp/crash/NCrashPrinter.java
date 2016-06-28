@@ -29,7 +29,7 @@ public class NCrashPrinter {
 
     public Settings init() {
         if(settings == null) {
-            settings = new Settings();
+            //settings = new Settings();
         }
         if(deviceInfoManager == null) {
             deviceInfoManager = DeviceInfoManager.getInstance();

@@ -14,9 +14,7 @@ public class DeviceInfoManager {
 
     private IDeviceInfo iDeviceInfo;
 
-    private DeviceInfoManager() {
-        //throw new UnsupportedOperationException("cannot be instantiated");
-    }
+    private DeviceInfoManager() {}
 
     private static DeviceInfoManager instance = new DeviceInfoManager();
 
