@@ -23,7 +23,6 @@ public class SDCardUtils {
      */
     private SDCardUtils() {
         //cannot be instantiated
-        throw new UnsupportedOperationException("cannot be instantiated");
     }
 
     private static SDCardUtils instance = new SDCardUtils();

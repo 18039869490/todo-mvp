@@ -20,8 +20,8 @@ public class Settings {
     public Settings init() {
         if(deviceInfoManager == null) {
             deviceInfoManager = DeviceInfoManager.getInstance();
+            deviceInfoManager.init();
         }
-
         return this;
     }
 

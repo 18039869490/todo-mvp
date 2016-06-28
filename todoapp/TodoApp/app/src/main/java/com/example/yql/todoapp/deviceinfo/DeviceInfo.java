@@ -100,7 +100,7 @@ public class DeviceInfo implements IDeviceInfo {
             }
 
             if(memory != null) {
-                memory = memory.replace("MemTotal:", "").replace(" ", "").replace("kb", "");
+                memory = memory.replace("MemTotal:", "").replace(" ", "").replace("kB", "");
                 float mem = Float.parseFloat(memory)/ 1000f;
                 return String.format("%.3f", mem) + "MB";
             }
@@ -131,7 +131,7 @@ public class DeviceInfo implements IDeviceInfo {
             InputStream is = proc.getInputStream();
             String size = getStringFromInputStream(is);
             if(!size.equals("\n")) {
-                return size;
+                return size.replace("\n", "");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -145,7 +145,7 @@ public class DeviceInfo implements IDeviceInfo {
             InputStream is = proc.getInputStream();
             String size = getStringFromInputStream(is);
             if(!size.equals("\n")) {
-                return size;
+                return size.replace("\n", "");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -159,7 +159,7 @@ public class DeviceInfo implements IDeviceInfo {
             InputStream is = proc.getInputStream();
             String size = getStringFromInputStream(is);
             if(!size.equals("\n")) {
-                return size;
+                return size.replace("\n", "");
             }
         } catch (IOException e) {
             e.printStackTrace();
