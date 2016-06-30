@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.yql.todoapp.crash.CrashPrinter;
+import com.example.yql.todoapp.crash.Crasher;
 import com.example.yql.todoapp.crash.Settings;
 
 public class MainActivity extends AppCompatActivity {
@@ -13,9 +14,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Settings settings = Settings.getInstance().init();
-        CrashPrinter crashPrinter = new CrashPrinter();
-        StringBuilder sb = crashPrinter.printCrashLog();
+        Crasher crasher = Crasher.getInstance();
+        Settings settings = crasher.init();
+        StringBuilder sb = crasher.printCrashLog();
         Log.e("Main", sb.toString());
     }
 }

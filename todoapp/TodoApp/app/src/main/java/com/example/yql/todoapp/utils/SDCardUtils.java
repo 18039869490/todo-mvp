@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.os.StatFs;
 
 import java.io.File;
+import java.util.Locale;
 
 /**
  * SD card Helper.
@@ -67,7 +68,7 @@ public class SDCardUtils {
      * @param unit
      * @return
      */
-    public long getFreeBytes(String filePath, int unit) {
+    public String getFreeBytes(String filePath, int unit) {
 
         if(filePath.startsWith(getSDCardPath())) {
             //if filePath prefix is equals getSDCardPath() to get sd card capacity.
@@ -85,22 +86,28 @@ public class SDCardUtils {
     /**
      * Formats capacity
      */
-    private long formatCapacityByUnit(long bytes, int unit) {
-        long result = 0L;
+    private String formatCapacityByUnit(long bytes, int unit) {
+        float result = 0L;
+        String tUnit = null;
+
         switch (unit) {
             case GIB:
-                result = bytes / 1073741824L;
+                result = bytes / 1073741824f;
+                tUnit = "GB";
                 break;
             case MIB:
-                result = bytes / 1048576L;
+                result = bytes / 1048576f;
+                tUnit = "MB";
                 break;
             case KIB:
-                result = bytes / 1024L;
+                result = bytes / 1024f;
+                tUnit = "KB";
                 break;
             case BYTE:
                 result = bytes;
+                tUnit = "byte";
                 break;
         }
-        return result;
+        return String.format(Locale.getDefault(), "%.3f " + tUnit, result);
     }
 }

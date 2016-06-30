@@ -58,7 +58,7 @@ public class DeviceInfo implements IDeviceInfo {
     @Override
     public Map<String, String> storageInformation() {
         Map<String, String> romMap = new HashMap<String, String>();
-        romMap.put("Internal Storage", String.valueOf(SDCardUtils.getInstance().getFreeBytes(SDCardUtils.getInstance().getSDCardPath(), SDCardUtils.GIB)));
+        romMap.put("Remain Space", SDCardUtils.getInstance().getFreeBytes(SDCardUtils.getInstance().getSDCardPath(), SDCardUtils.GIB));
 
         return romMap;
     }
