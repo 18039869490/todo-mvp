@@ -35,7 +35,6 @@ public class AddEditTasksPresenter implements AddEditTaskContract.Presenter, Tas
         this.mTaskId = mTaskId;
         this.mTasksRepository = mTasksRepository;
         this.mAddTaskView = mAddTaskView;
-
         mAddTaskView.setPresenter(this);
     }
 

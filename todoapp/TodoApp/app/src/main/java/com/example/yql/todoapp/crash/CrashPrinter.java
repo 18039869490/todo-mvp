@@ -163,12 +163,6 @@ public class CrashPrinter implements Printer {
      * @return
      */
     private StringBuilder titleBar(StringBuilder sb, String title) {
-//        sb.append("║ ")
-//                .append(title)
-//                .append("\n")
-//                .append(MIDDLE_BORDER)
-//                .append("\n");
-
         sb.append(title)
                 .append("\n");
         return sb;

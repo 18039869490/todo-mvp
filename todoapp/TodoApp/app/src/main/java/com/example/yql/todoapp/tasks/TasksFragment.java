@@ -8,7 +8,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,8 +46,10 @@ public class TasksFragment extends Fragment implements TasksContract.View{
     private TextView mNoTasksAddView;
 
     //------------Base variable-----------
-    private TasksAdapter mTaskAdapter;
-    private TasksAdapter.TaskItemListener mItemListener;
+    //private TasksAdapter mTaskAdapter;
+    //private TasksAdapter.TaskItemListener mItemListener;
+    private TasksAdapterR mTaskAdapterR;
+    private TasksAdapterR.TaskItemListener mItemListener;
     private TasksContract.Presenter mPresenter;
 
     public TasksFragment() {
@@ -59,7 +63,8 @@ public class TasksFragment extends Fragment implements TasksContract.View{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTaskAdapter = new TasksAdapter(new ArrayList<Task>(0), mItemListener);
+        //mTaskAdapter = new TasksAdapter(new ArrayList<Task>(0), mItemListener);
+        mTaskAdapterR = new TasksAdapterR(new ArrayList<Task>(0), mItemListener);
         mItemListener = new CTaskItemListener();
     }
 
@@ -80,8 +85,10 @@ public class TasksFragment extends Fragment implements TasksContract.View{
         View root = inflater.inflate(R.layout.fragment_tasks, container, false);
 
         //Set up tasks view
-        ListView listView = (ListView) root.findViewById(R.id.tasks_list);
-        listView.setAdapter(mTaskAdapter);
+        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.tasks_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        recyclerView.setAdapter(mTaskAdapterR);
         mFilteringLabelView = (TextView) root.findViewById(R.id.filtering_label);
         mTasksView = (LinearLayout) root.findViewById(R.id.ll_tasks);
 
@@ -109,20 +116,20 @@ public class TasksFragment extends Fragment implements TasksContract.View{
         });
 
         //Set up progress indicator
-        ScrollChildSwipeRefreshLayout swipeRefreshLayout = (ScrollChildSwipeRefreshLayout) root.findViewById(R.id.refresh_layout);
-        swipeRefreshLayout.setColorSchemeColors(
-                ContextCompat.getColor(getActivity(), R.color.colorPrimary),
-                ContextCompat.getColor(getActivity(), R.color.colorAccent),
-                ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
-        );
+//        ScrollChildSwipeRefreshLayout swipeRefreshLayout = (ScrollChildSwipeRefreshLayout) root.findViewById(R.id.refresh_layout);
+//        swipeRefreshLayout.setColorSchemeColors(
+//                ContextCompat.getColor(getActivity(), R.color.colorPrimary),
+//                ContextCompat.getColor(getActivity(), R.color.colorAccent),
+//                ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
+//        );
         //Set the scrolling view in the custom SwipeRefresh
-        swipeRefreshLayout.setScrollUpChild(listView);
-        swipeRefreshLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.loadTasks(false);
-            }
-        });
+//        swipeRefreshLayout.setScrollUpChild(recyclerView);
+//        swipeRefreshLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mPresenter.loadTasks(false);
+//            }
+//        });
 
         setHasOptionsMenu(true);
 
@@ -163,19 +170,19 @@ public class TasksFragment extends Fragment implements TasksContract.View{
             return;
         }
 
-        final SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.refresh_layout);
-        //Make sure setRefreshing() is called after the layout is done with everything else.
-        refreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                refreshLayout.setRefreshing(active);
-            }
-        });
+//        final SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.refresh_layout);
+//        //Make sure setRefreshing() is called after the layout is done with everything else.
+//        refreshLayout.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                refreshLayout.setRefreshing(active);
+//            }
+//        });
     }
 
     @Override
     public void showTasks(List<Task> tasks) {
-        mTaskAdapter.replaceData(tasks);
+        mTaskAdapterR.replaceData(tasks);
         mTasksView.setVisibility(View.VISIBLE);
         mNoTasksView.setVisibility(View.GONE);
     }
@@ -183,7 +190,7 @@ public class TasksFragment extends Fragment implements TasksContract.View{
     @Override
     public void showAddTask() {
         Intent intent = new Intent(getContext(), AddEditTaskActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, AddEditTaskActivity.REQUEST_ADD_TASK);
     }
 
     @Override
@@ -289,7 +296,7 @@ public class TasksFragment extends Fragment implements TasksContract.View{
         popupMenu.show();
     }
 
-    private class CTaskItemListener implements TasksAdapter.TaskItemListener {
+    private class CTaskItemListener implements TasksAdapterR.TaskItemListener {
 
         @Override
         public void onTaskClick(Task clickedTask) {
