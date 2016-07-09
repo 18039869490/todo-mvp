@@ -14,9 +14,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Crasher crasher = Crasher.getInstance();
-        Settings settings = crasher.init();
-        StringBuilder sb = crasher.printCrashLog();
-        Log.e("Main", sb.toString());
+        String str = null;
+        str.toString();
     }
 }

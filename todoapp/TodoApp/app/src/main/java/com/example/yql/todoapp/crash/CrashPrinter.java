@@ -1,10 +1,14 @@
 package com.example.yql.todoapp.crash;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.yql.todoapp.logger.Logger;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -121,40 +125,6 @@ public class CrashPrinter implements Printer {
     private StringBuilder screenInformation(StringBuilder sb) {
         return chunkContent(sb, SCREEN);
     }
-
-
-    /**
-     * 头部样式
-     * @param sb
-     * @return
-     */
-//    private StringBuilder topBoard(StringBuilder sb) {
-//        sb.append(TOP_BORDER)
-//                .append("\n");
-//        return sb;
-//    }
-
-    /**
-     * 底部样式
-     * @param sb
-     * @return
-     */
-//    private StringBuilder bottomBoard(StringBuilder sb) {
-//        return bottomBoard(sb, null);
-//    }
-
-//    private StringBuilder bottomBoard(StringBuilder sb, String title) {
-//        if(TextUtils.isEmpty(title)) {
-//            title = "END PRINT";
-//        }
-//        sb.append(MIDDLE_BORDER)
-//                .append("\n")
-//                .append("║ ")
-//                .append(title)
-//                .append("\n")
-//                .append(BOTTOM_BORDER);
-//        return sb;
-//    }
 
     /**
      * 块级标题
