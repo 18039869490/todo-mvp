@@ -97,7 +97,13 @@ public class AddEditTasksPresenter implements AddEditTaskContract.Presenter, Tas
         if(isNewTask()) {
             throw new RuntimeException("updateTask() was called but task is new.");
         }
-        mTasksRepository.saveTask(new Task(title, description, mTaskId));
+
+        //Revert item info
+        Task task = mTasksRepository.getTaskWithId(mTaskId);
+        mTasksRepository.saveTask(new Task(title,
+                description,
+                task.getId(),
+                task.isCompleted()));
         //After an edit, go back to the list
         mAddTaskView.showTaskList();
     }

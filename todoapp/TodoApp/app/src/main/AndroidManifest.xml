@@ -24,6 +24,7 @@
 
         <activity android:name=".addedittask.AddEditTaskActivity"></activity>
         <activity android:name=".addedittask.TestActivity"/>
+        <activity android:name=".taskdetail.TaskDetailActivity"/>
     </application>
 
 </manifest>

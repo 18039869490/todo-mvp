@@ -45,7 +45,7 @@ public class AddEditTaskActivity extends BaseAppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID, taskId);
                 addEditTaskFragment.setArguments(bundle);
-            }else {
+            } else {
                 actionBar.setTitle(R.string.add_task);
             }
 

@@ -242,4 +242,9 @@ public class TasksLocalDataSource implements TasksDataSource {
 
         db.close();
     }
+
+    @Override
+    public Task getTaskWithId(@NonNull String taskId) {
+        return null;
+    }
 }

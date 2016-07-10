@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.example.yql.todoapp.R;
 import com.example.yql.todoapp.addedittask.AddEditTaskActivity;
 import com.example.yql.todoapp.data.Task;
+import com.example.yql.todoapp.taskdetail.TaskDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,8 +65,9 @@ public class TasksFragment extends Fragment implements TasksContract.View{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //mTaskAdapter = new TasksAdapter(new ArrayList<Task>(0), mItemListener);
-        mTaskAdapterR = new TasksAdapterR(new ArrayList<Task>(0), mItemListener);
         mItemListener = new CTaskItemListener();
+        mTaskAdapterR = new TasksAdapterR(new ArrayList<Task>(0));
+        mTaskAdapterR.setOnItemClickListener(mItemListener);
     }
 
     @Override
@@ -86,6 +88,7 @@ public class TasksFragment extends Fragment implements TasksContract.View{
 
         //Set up tasks view
         RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.tasks_list);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         recyclerView.setAdapter(mTaskAdapterR);
@@ -93,7 +96,7 @@ public class TasksFragment extends Fragment implements TasksContract.View{
         mTasksView = (LinearLayout) root.findViewById(R.id.ll_tasks);
 
         //Set up no tasks view
-        mNoTasksView = (LinearLayout) root.findViewById(R.id.ll_tasks);
+        mNoTasksView = (LinearLayout) root.findViewById(R.id.no_tasks);
         mNoTasksIcon = (ImageView) root.findViewById(R.id.no_tasks_icon);
         mNoTasksMainView = (TextView) root.findViewById(R.id.no_tasks_main);
         mNoTasksAddView = (TextView) root.findViewById(R.id.no_tasks_add);
@@ -116,20 +119,20 @@ public class TasksFragment extends Fragment implements TasksContract.View{
         });
 
         //Set up progress indicator
-//        ScrollChildSwipeRefreshLayout swipeRefreshLayout = (ScrollChildSwipeRefreshLayout) root.findViewById(R.id.refresh_layout);
-//        swipeRefreshLayout.setColorSchemeColors(
-//                ContextCompat.getColor(getActivity(), R.color.colorPrimary),
-//                ContextCompat.getColor(getActivity(), R.color.colorAccent),
-//                ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
-//        );
+        ScrollChildSwipeRefreshLayout swipeRefreshLayout = (ScrollChildSwipeRefreshLayout) root.findViewById(R.id.refresh_layout);
+        swipeRefreshLayout.setColorSchemeColors(
+                ContextCompat.getColor(getActivity(), R.color.colorPrimary),
+                ContextCompat.getColor(getActivity(), R.color.colorAccent),
+                ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
+        );
         //Set the scrolling view in the custom SwipeRefresh
-//        swipeRefreshLayout.setScrollUpChild(recyclerView);
-//        swipeRefreshLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mPresenter.loadTasks(false);
-//            }
-//        });
+        swipeRefreshLayout.setScrollUpChild(recyclerView);
+        swipeRefreshLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.loadTasks(false);
+            }
+        });
 
         setHasOptionsMenu(true);
 
@@ -170,19 +173,20 @@ public class TasksFragment extends Fragment implements TasksContract.View{
             return;
         }
 
-//        final SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.refresh_layout);
-//        //Make sure setRefreshing() is called after the layout is done with everything else.
-//        refreshLayout.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                refreshLayout.setRefreshing(active);
-//            }
-//        });
+        final SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.refresh_layout);
+        //Make sure setRefreshing() is called after the layout is done with everything else.
+        refreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.setRefreshing(active);
+            }
+        });
     }
 
     @Override
     public void showTasks(List<Task> tasks) {
         mTaskAdapterR.replaceData(tasks);
+
         mTasksView.setVisibility(View.VISIBLE);
         mNoTasksView.setVisibility(View.GONE);
     }
@@ -195,17 +199,21 @@ public class TasksFragment extends Fragment implements TasksContract.View{
 
     @Override
     public void showTaskDetailsUi(String taskId) {
-
+        //In it`s own activity, since it makes more sense that way and it gives us
+        //the flexibility to show some Intent stubbing.
+        Intent intent = new Intent(getContext(), TaskDetailActivity.class);
+        intent.putExtra(TaskDetailActivity.EXTRA_TASK_ID, taskId);
+        startActivity(intent);
     }
 
     @Override
     public void showTasksMarkedCompleted() {
-
+        showMessage(getString(R.string.task_marked_complete));
     }
 
     @Override
     public void showTasksMarkedActive() {
-
+        showMessage(getString(R.string.task_marked_active));
     }
 
     @Override
@@ -226,22 +234,31 @@ public class TasksFragment extends Fragment implements TasksContract.View{
 
     @Override
     public void showActiveFilterLabel() {
-
+        mFilteringLabelView.setText(getResources().getString(R.string.label_active));
     }
 
     @Override
     public void showCompletedFilterLabel() {
+        mFilteringLabelView.setText(getResources().getString(R.string.label_completed));
+    }
 
+    @Override
+    public void showCompletedTasksCleared() {
+        showMessage(getString(R.string.completed_tasks_cleared));
     }
 
     @Override
     public void showAllFilterLabel() {
-
+        mFilteringLabelView.setText(getResources().getString(R.string.label_all));
     }
 
     @Override
     public void showNoActiveTasks() {
-
+        showNoTasksViews(
+                getResources().getString(R.string.no_tasks_active),
+                R.drawable.ic_check_circle_24dp,
+                false
+        );
     }
 
     private void showNoTasksViews(String mainText, int iconRes, boolean showAddView) {
@@ -255,7 +272,9 @@ public class TasksFragment extends Fragment implements TasksContract.View{
 
     @Override
     public void showNoCompletedTasks() {
-
+        showNoTasksViews(getResources().getString(R.string.no_tasks_completed),
+                R.drawable.ic_verified_user_24dp,
+                false);
     }
 
     @Override
@@ -281,7 +300,7 @@ public class TasksFragment extends Fragment implements TasksContract.View{
                     case R.id.active:
                         mPresenter.setFiltering(TasksFilterType.ACTIVE_TASKS);
                         break;
-                    case R.id.complete:
+                    case R.id.completed:
                         mPresenter.setFiltering(TasksFilterType.COMPLETED_TASKS);
                         break;
                     default:
@@ -300,17 +319,17 @@ public class TasksFragment extends Fragment implements TasksContract.View{
 
         @Override
         public void onTaskClick(Task clickedTask) {
-
+            mPresenter.openTaskDetails(clickedTask);
         }
 
         @Override
         public void onCompletedTaskClick(Task completedTask) {
-
+            mPresenter.completeTask(completedTask);
         }
 
         @Override
         public void onActivateTaskClick(Task activatedTask) {
-
+            mPresenter.activateTask(activatedTask);
         }
 
     }

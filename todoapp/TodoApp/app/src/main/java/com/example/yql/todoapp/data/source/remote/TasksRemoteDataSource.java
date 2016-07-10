@@ -150,4 +150,9 @@ public class TasksRemoteDataSource implements TasksDataSource {
     public void deleteTask(String taskId) {
         TASKS_SERVICE_DATA.remove(taskId);
     }
+
+    @Override
+    public Task getTaskWithId(@NonNull String taskId) {
+        return null;
+    }
 }

@@ -6,6 +6,9 @@
     <item type="id" name="nav_view"></item>
     <item type="id" name="refresh_layout"></item>
     <item type="id" name="tasksContainer"></item>
+    <item type="id" name="fab_add_task"></item>
+    <item type="id" name="fab_add_edit"></item>
+    <item type="id" name="fab_edit_task"/>
     <item type="id" name="fab_edit_task_done"></item>
     <item type="id" name="coordinator_layout"></item>
     <item type= "id" name="toolbar"></item>

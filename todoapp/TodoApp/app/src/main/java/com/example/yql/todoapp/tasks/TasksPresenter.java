@@ -2,6 +2,7 @@ package com.example.yql.todoapp.tasks;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 
 import com.example.yql.todoapp.addedittask.AddEditTaskActivity;
@@ -70,22 +71,37 @@ public class TasksPresenter implements TasksContract.Presenter {
 
     @Override
     public void openTaskDetails(@NonNull Task requestedTask) {
-
+        if(requestedTask == null) {
+            throw new NullPointerException("requestedTask cannot be null");
+        }
+        mTasksView.showTaskDetailsUi(requestedTask.getId());
     }
 
     @Override
     public void completeTask(@NonNull Task completedTask) {
-
+        if(completedTask == null) {
+            throw new NullPointerException("completedTask cannot be null");
+        }
+        mTasksRepository.completeTask(completedTask);
+        mTasksView.showTasksMarkedCompleted();
+        loadTasks(false, false);
     }
 
     @Override
     public void activateTask(@NonNull Task activeTask) {
-
+        if(activeTask == null) {
+            throw new NullPointerException("activeTask cannot be null");
+        }
+        mTasksRepository.activateTask(activeTask);
+        mTasksView.showTasksMarkedActive();
+        loadTasks(false, false);
     }
 
     @Override
     public void clearCompletedTasks() {
-
+        mTasksRepository.clearCompletedTasks();
+        mTasksView.showCompletedTasksCleared();
+        loadTasks(false, false);
     }
 
     private void loadTasks(boolean forceUpdate, final boolean showLoadingUI) {

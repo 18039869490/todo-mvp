@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<com.example.yql.todoapp.tasks.ScrollChildSwipeRefreshLayout
+<com.example.yql.todoapp.tasks.ScrollChildSwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">-->
+    android:layout_height="match_parent">
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -68,6 +68,4 @@
                 android:text="@string/no_tasks_add"/>
         </LinearLayout>
     </RelativeLayout>
-
-<!--
-</com.example.yql.todoapp.tasks.ScrollChildSwipeRefreshLayout>-->
+</com.example.yql.todoapp.tasks.ScrollChildSwipeRefreshLayout>

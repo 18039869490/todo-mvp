@@ -25,6 +25,7 @@ public interface TasksContract {
         void showNoTasks();
         void showActiveFilterLabel();
         void showCompletedFilterLabel();
+        void showCompletedTasksCleared();
         void showAllFilterLabel();
         void showNoActiveTasks();
         void showNoCompletedTasks();

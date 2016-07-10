@@ -1,14 +1,19 @@
 package com.example.yql.todoapp.data.source;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 
 import com.example.yql.todoapp.data.Task;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by yql on 2016/5/29.
@@ -62,27 +67,68 @@ public class TasksRepository implements TasksDataSource {
 
     @Override
     public void completeTask(@NonNull Task task) {
+        if(task == null) {
+            throw new NullPointerException("completedTask cannot be null");
+        }
+        mTasksRemoteDataSource.completeTask(task);
+        mTasksLocalDataSource.completeTask(task);
+        Task completedTask = new Task(task.getTitle(), task.getDescription(), task.getId(), true);
 
+        //Do in memory cache update to keep the app UI up to date.
+        if(mCacheTasks == null) {
+            mCacheTasks = new LinkedHashMap<>();
+        }
+        mCacheTasks.put(task.getId(), completedTask);
     }
 
     @Override
     public void completeTask(@NonNull String taskId) {
-
+        if(TextUtils.isEmpty(taskId)) {
+            throw new NullPointerException("taskId cannot be null!");
+        }
+        completeTask(getTaskWithId(taskId));
     }
 
     @Override
     public void activateTask(@NonNull Task task) {
+        if(task == null) {
+            throw new NullPointerException("task cannot be null");
+        }
+        mTasksRemoteDataSource.activateTask(task);
+        mTasksLocalDataSource.activateTask(task);
 
+        Task activeTask = new Task(task.getTitle(), task.getDescription(), task.getId());
+        // Do in memory cache update to keep the app UI up to date
+        if (mCacheTasks == null) {
+            mCacheTasks = new LinkedHashMap<>();
+        }
+        mCacheTasks.put(task.getId(), activeTask);
     }
 
     @Override
     public void activateTask(@NonNull String taskId) {
-
+        if(TextUtils.isEmpty(taskId)) {
+            throw new NullPointerException("taskId cannot be null!");
+        }
+        activateTask(getTaskWithId(taskId));
     }
 
     @Override
     public void clearCompletedTasks() {
+        mTasksRemoteDataSource.clearCompletedTasks();
+        mTasksLocalDataSource.clearCompletedTasks();
 
+        // Do in memory cache update to keep the app UI up to date
+        if (mCacheTasks == null) {
+            mCacheTasks = new LinkedHashMap<>();
+        }
+        Iterator<Map.Entry<String, Task>> it = mCacheTasks.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, Task> entry = it.next();
+            if (entry.getValue().isCompleted()) {
+                it.remove();
+            }
+        }
     }
 
     public void getTasks(@NonNull LoadTasksCallback callback) {
@@ -101,8 +147,45 @@ public class TasksRepository implements TasksDataSource {
     }
 
     @Override
-    public void getTask(@NonNull String taskId, @NonNull GetTaskCallback callback) {
+    public void getTask(@NonNull final String taskId, @NonNull final GetTaskCallback callback) {
+        if(TextUtils.isEmpty(taskId)) {
+            throw new NullPointerException("taskId cannot be null");
+        }
+        if(TextUtils.isEmpty(taskId)) {
+            throw new NullPointerException("callback cannot be null");
+        }
 
+        //Respond immediately with cache if available
+        Task cachedTask = getTaskWithId(taskId);
+        if(mCacheTasks != null) {
+            callback.onTaskLoaded(cachedTask);
+            return;
+        }
+
+        //Load from server/persisted if needed
+
+        //Is the task in the local data source? If not, query the network
+        mTasksLocalDataSource.getTask(taskId, new GetTaskCallback() {
+            @Override
+            public void onTaskLoaded(Task task) {
+                callback.onTaskLoaded(task);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                mTasksRemoteDataSource.getTask(taskId, new GetTaskCallback() {
+                    @Override
+                    public void onTaskLoaded(Task task) {
+                        callback.onTaskLoaded(task);
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+                        callback.onDataNotAvailable();
+                    }
+                });
+            }
+        });
     }
 
     private void getTasksFromRemoteDataSource(@NonNull final LoadTasksCallback callback) {
@@ -157,6 +240,35 @@ public class TasksRepository implements TasksDataSource {
 
     @Override
     public void deleteTask(@NonNull String taskId) {
+        mTasksRemoteDataSource.deleteTask(checkNotNull(taskId));
+        mTasksLocalDataSource.deleteTask(checkNotNull(taskId));
 
+        mCacheTasks.remove(taskId);
     }
+
+    @Override
+    public Task getTaskWithId(@NonNull String taskId) {
+        if(TextUtils.isEmpty(taskId)) {
+            throw new NullPointerException("id cannot be null");
+        }
+
+        if(mCacheTasks == null || mCacheTasks.isEmpty()) {
+            return null;
+        }
+
+        return mCacheTasks.get(taskId);
+    }
+
+//    @Nullable
+//    private Task getTaskWidthId(@NonNull String id) {
+//        if(TextUtils.isEmpty(id)) {
+//            throw new NullPointerException("id cannot be null");
+//        }
+//
+//        if(mCacheTasks == null || mCacheTasks.isEmpty()) {
+//            return null;
+//        }
+//
+//        return mCacheTasks.get(id);
+//    }
 }

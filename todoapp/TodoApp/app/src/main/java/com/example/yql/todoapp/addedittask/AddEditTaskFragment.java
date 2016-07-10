@@ -1,5 +1,6 @@
 package com.example.yql.todoapp.addedittask;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -69,7 +70,7 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab_edit_task_done);
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab_add_edit);
         fab.setImageResource(R.drawable.ic_done);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +89,7 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
 
     @Override
     public void showTaskList() {
-        getActivity().setResult(AddEditTaskActivity.RESULT_OK);
+        getActivity().setResult(Activity.RESULT_OK);
         getActivity().finish();
     }
 

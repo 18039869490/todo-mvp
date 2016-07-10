@@ -105,6 +105,11 @@ public class FakeTasksRemoteDataSource implements TasksDataSource {
     }
 
     @Override
+    public Task getTaskWithId(@NonNull String taskId) {
+        return null;
+    }
+
+    @Override
     public void deleteAllTasks() {
         TASKS_SERVICE_DATA.clear();
     }
